@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PostService {
@@ -19,12 +18,12 @@ public class PostService {
     PostMapper postMapper;
 
     public List<PostDto> getall(){
-        List<Post> posts = postRepo.getall();
+        List<Post> posts = postRepo.findAll();
         return postMapper.toDtoList(posts);
     }
 
     public PostDto getbyid(int id){
-        Post post = postRepo.getbyid(id);
+        Post post = postRepo.findById(id).orElse(null);
         return postMapper.toPostDto(post);
     }
 
