@@ -1,27 +1,29 @@
 package com.assignment.assignment.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
+import jakarta.persistence.*;
 @Entity
 public class Post {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String title;
-    String content;
-    String author;
+    private int id;
+
+    private String title;
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)  // Ensure 'user_id' is not null
+    private User user;
 
     public Post() { }
-    public Post(int id, String title, String content, String author) {
-        this.id = id;
+
+    public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
-        this.author = author;
+        this.user = user;
     }
 
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -46,11 +48,11 @@ public class Post {
         this.content = content;
     }
 
-    public String getAuthor() {
-        return author;
+    public User getUser() {
+        return user;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

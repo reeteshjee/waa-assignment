@@ -1,16 +1,17 @@
 package com.assignment.assignment.dto;
 
 public class UserDto {
+
     private Integer id;
     private String name;
 
-    public UserDto() {}
-
+    // Constructor
     public UserDto(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
+    // Getters and Setters
     public Integer getId() {
         return id;
     }

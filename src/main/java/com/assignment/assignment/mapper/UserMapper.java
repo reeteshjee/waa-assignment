@@ -24,6 +24,6 @@ public class UserMapper {
     }
 
     public PostDto postToDTO(Post post) {
-        return new PostDto(post.getId(), post.getTitle(), post.getContent(), post.getAuthor());
+        return new PostDto(post.getId(), post.getTitle(), post.getContent(),post.getUser().getId());
     }
 }

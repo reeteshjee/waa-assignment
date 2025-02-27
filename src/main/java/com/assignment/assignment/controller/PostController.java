@@ -1,6 +1,8 @@
 package com.assignment.assignment.controller;
 
 import com.assignment.assignment.domain.Post;
+import com.assignment.assignment.domain.User;
+import com.assignment.assignment.repo.UserRepo;
 import com.assignment.assignment.dto.PostDto;
 import com.assignment.assignment.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +16,31 @@ import java.util.List;
 public class PostController {
 
     @Autowired
-    PostService postService;
+    private PostService postService;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @GetMapping
-    public List<PostDto> getall(){
-        return postService.getall();
+    public List<PostDto> getAll() {
+        return postService.getAll();
     }
 
     @GetMapping("/{id}")
     public PostDto getById(@PathVariable int id) {
-        return postService.getbyid(id);
+        return postService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PostDto save(@RequestBody Post post) {
-        return postService.save(post);
+    public PostDto save(@RequestBody PostDto postDto) {
+        return postService.save(postDto);
     }
+
+    @GetMapping("/{id}/posts")
+    public List<PostDto> getbyusers(@PathVariable int id) {
+        return postService.getpostsbyusers(id);
+    }
+
 
 }
