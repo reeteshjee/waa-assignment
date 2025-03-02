@@ -6,11 +6,11 @@ import com.assignment.assignment.dto.PostDto;
 import com.assignment.assignment.mapper.PostMapper;
 import com.assignment.assignment.repo.PostRepo;
 import com.assignment.assignment.repo.UserRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-
+import java.util.stream.Collectors;
 @Service
 public class PostService {
 
@@ -18,38 +18,33 @@ public class PostService {
     private PostRepo postRepo;
 
     @Autowired
-    private UserRepo userRepo;
+    private UserRepo userRepo;  // Inject UserRepository
 
-    @Autowired
-    private PostMapper postMapper;
-
-    public List<PostDto> getAll() {
-        List<Post> posts = postRepo.findAll();
-        return postMapper.toDtoList(posts);
+    public List<PostDto> getAllPosts() {
+        return postRepo.findAll().stream().map(PostMapper::toPostDto).collect(Collectors.toList());
     }
 
-    public PostDto getById(int id) {
-        Post post = postRepo.findById(id).orElse(null);
-        return post != null ? postMapper.toPostDto(post) : null;
+    public PostDto getPostById(int id) {
+        return postRepo.findById(id).map(PostMapper::toPostDto).orElse(null);
     }
 
-    public PostDto save(PostDto postDto) {
-        User user = userRepo.findById(postDto.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        Post post = new Post();
-        post.setTitle(postDto.getTitle());
-        post.setContent(postDto.getContent());
-        post.setUser(user);  // Set the User entity in the Post
+    public PostDto createPost(PostDto postDto) {
+        if (postDto.getUserId() <= 0) {  // Validate userId
+            throw new IllegalArgumentException("Invalid user ID: " + postDto.getUserId());
+        }
 
-        // Save the post
-        Post savedPost = postRepo.save(post);
+        User user = userRepo.findById(postDto.getUserId()).orElseThrow(() ->
+                new IllegalArgumentException("User not found with ID: " + postDto.getUserId()));
 
-        // Return PostDto with user details
-        return new PostDto(savedPost.getId(), savedPost.getTitle(), savedPost.getContent(), savedPost.getUser().getId());
+        Post post = PostMapper.toPost(postDto, user); // Pass user to mapper
+        post = postRepo.save(post); // Save post
+        return PostMapper.toPostDto(post); // Return saved post
     }
 
-    public List<PostDto> getpostsbyusers(Integer user_id) {
-        List<Post> posts = postRepo.findByUserId(user_id);
-        return postMapper.toDtoList(posts);
+    public List<PostDto> getPostsByTitle(String title) {
+        return postRepo.findPostsByTitle(title)
+                .stream()
+                .map(PostMapper::toPostDto)
+                .collect(Collectors.toList());
     }
 }

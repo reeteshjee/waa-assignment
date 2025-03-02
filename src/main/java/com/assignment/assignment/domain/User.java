@@ -1,6 +1,7 @@
 package com.assignment.assignment.domain;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -11,6 +12,9 @@ public class User {
     private Integer id;
 
     private String name;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)  // Cascade delete posts when user is deleted
+    private List<Post> posts;
 
     public User() {}
 
@@ -33,5 +37,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 }

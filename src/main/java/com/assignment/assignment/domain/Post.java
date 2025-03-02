@@ -1,6 +1,9 @@
 package com.assignment.assignment.domain;
 
 import jakarta.persistence.*;
+
+import java.util.List;
+
 @Entity
 public class Post {
 
@@ -12,10 +15,13 @@ public class Post {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)  // Ensure 'user_id' is not null
-    private User user;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;  // Add this field
 
-    public Post() { }
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
+    public Post() {}
 
     public Post(String title, String content, User user) {
         this.title = title;
@@ -23,7 +29,6 @@ public class Post {
         this.user = user;
     }
 
-    // Getters and setters
     public int getId() {
         return id;
     }

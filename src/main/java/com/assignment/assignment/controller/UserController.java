@@ -1,11 +1,11 @@
 package com.assignment.assignment.controller;
 
-import com.assignment.assignment.domain.User;
+import com.assignment.assignment.dto.PostDto;
+import com.assignment.assignment.dto.UserDto;
+import com.assignment.assignment.service.PostService;
 import com.assignment.assignment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -16,20 +16,34 @@ public class UserController {
     private UserService userService;
 
     @GetMapping()
-    public List<User> getall() {
-        return userService.getAll();
+    public List<UserDto> getAllUsers() {
+        return userService.getAllUsers();
     }
 
-    // Get user by ID
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Integer id) {
+    public UserDto getUserById(@PathVariable int id) {
         return userService.getUserById(id);
     }
 
-    // Save a new user
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    @PostMapping()
+    public UserDto createUser(@RequestBody UserDto userDto) {
+        return userService.createUser(userDto);
     }
+
+    @GetMapping("/{id}/posts")
+    public List<PostDto> getPostsByUserId(@PathVariable int id) {
+        return userService.getPostsByUserId(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteUser(@PathVariable int id) {
+        userService.deleteUser(id);
+        return "User deleted successfully with all associated posts and comments";
+    }
+
+    @GetMapping("/more-than/{n}/posts")
+    public List<UserDto> getUsersWithMoreThanNPosts(@PathVariable int n) {
+        return userService.getUsersWithMoreThanNPosts(n);
+    }
+
 }

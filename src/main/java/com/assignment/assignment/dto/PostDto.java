@@ -1,20 +1,11 @@
 package com.assignment.assignment.dto;
 
 public class PostDto {
-
     private int id;
     private String title;
     private String content;
-    private Integer user_id;  // ID of the associated User
+    private int userId;  // Add userId field
 
-    public PostDto(int id, String title, String content, Integer user_id) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.user_id = user_id;
-    }
-
-    // Getters and Setters
     public int getId() {
         return id;
     }
@@ -39,11 +30,11 @@ public class PostDto {
         this.content = content;
     }
 
-    public Integer getUserId() {
-        return user_id;
+    public int getUserId() {  // Getter for userId
+        return userId;
     }
 
-    public void setUserId(Integer user_id) {
-        this.user_id = user_id;
+    public void setUserId(int userId) {  // Setter for userId
+        this.userId = userId;
     }
 }

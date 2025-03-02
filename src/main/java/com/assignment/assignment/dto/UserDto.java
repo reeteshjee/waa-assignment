@@ -1,17 +1,12 @@
 package com.assignment.assignment.dto;
 
-public class UserDto {
+import java.util.List;
 
+public class UserDto {
     private Integer id;
     private String name;
+    private List<PostDto> posts;
 
-    // Constructor
-    public UserDto(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    // Getters and Setters
     public Integer getId() {
         return id;
     }
@@ -26,5 +21,13 @@ public class UserDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<PostDto> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<PostDto> posts) {
+        this.posts = posts;
     }
 }
