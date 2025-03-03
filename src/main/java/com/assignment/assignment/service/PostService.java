@@ -18,17 +18,23 @@ public class PostService {
     private PostRepo postRepo;
 
     @Autowired
-    private UserRepo userRepo;  // Inject UserRepository
+    private UserRepo userRepo;
+
+    @Autowired
+    private LoggerService loggerService;
 
     public List<PostDto> getAllPosts() {
+        loggerService.logOperation("Fetching All Posts");
         return postRepo.findAll().stream().map(PostMapper::toPostDto).collect(Collectors.toList());
     }
 
     public PostDto getPostById(int id) {
+        loggerService.logOperation("Fetching Post by ID : "+id);
         return postRepo.findById(id).map(PostMapper::toPostDto).orElse(null);
     }
 
     public PostDto createPost(PostDto postDto) {
+        loggerService.logOperation("Creating new post");
         if (postDto.getUserId() <= 0) {  // Validate userId
             throw new IllegalArgumentException("Invalid user ID: " + postDto.getUserId());
         }
@@ -42,6 +48,7 @@ public class PostService {
     }
 
     public List<PostDto> getPostsByTitle(String title) {
+        loggerService.logOperation("Fetching Posts by Title:"+title);
         return postRepo.findPostsByTitle(title)
                 .stream()
                 .map(PostMapper::toPostDto)

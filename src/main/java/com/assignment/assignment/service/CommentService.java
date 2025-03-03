@@ -19,7 +19,11 @@ public class CommentService {
     @Autowired
     private PostRepo postRepo;
 
+    @Autowired
+    private LoggerService loggerService ;
+
     public CommentDto addComment(int postId, CommentDto commentDto) {
+        loggerService.logOperation("Creating New Comment");
         Post post = postRepo.findById(postId).orElseThrow(() -> new IllegalArgumentException("Post not found"));
         Comment comment = new Comment();
         comment.setName(commentDto.getName());
