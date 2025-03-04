@@ -14,6 +14,8 @@ public class UserMapper {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
         dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setPassword(user.getPassword());
 
         // Handle null posts to avoid NullPointerException
         if (user.getPosts() != null) {
@@ -29,6 +31,8 @@ public class UserMapper {
         User user = new User();
         user.setId(dto.getId());
         user.setName(dto.getName());
+        user.setPassword(dto.getPassword());
+        user.setEmail(dto.getEmail());
         return user;
     }
 }
